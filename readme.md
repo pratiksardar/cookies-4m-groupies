@@ -26,7 +26,7 @@ GateKeep is a Telegram mini-app designed to empower Web3 protocols, DAOs, and ot
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/gatekeep.git
+   git clone https://github.com/pratiksardar/gatekeep.git
    cd gatekeep
    ```
 
