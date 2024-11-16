@@ -1,24 +1,24 @@
-# GateKeep
+# Artify
 
-GateKeep is a Telegram mini-app designed to empower Web3 protocols, DAOs, and other communities by creating active, verified, and engaged groups. By implementing controlled gatekeeping mechanisms, it ensures that only users meeting specific criteria can join and participate in groups. Additionally, it provides discovery features to help users explore similar groups or events based on analytics.
+ArtSupport is a platform designed to empower artists by providing them with tools to build profiles, create campaigns for support, and publish their art. It also allows art enthusiasts to view, bid on, and support their favorite artists. The platform benefits from art bidding, enabling it to sustain and run effectively.
 
 ---
 
 ## 🚀 Features
 
-### Gatekeeping Mechanisms
-- **POAP (Proof of Attendance Protocol)**: Restrict access to users who possess specific POAPs, ensuring only relevant participants.
-- **Transaction-Based Controls**: Set minimum transaction criteria for entry, ensuring participants are active blockchain users.
-- **Token-Based Requirements**: Require users to hold a minimum amount of specific tokens, creating value alignment.
+### For Artists
+- **Profile Building**: Artists can create and customize their profiles to showcase their work and achievements.
+- **Campaign Creation**: Artists can create campaigns to seek support from their fans and patrons.
+- **Art Publishing**: Artists can publish their art on the platform, making it accessible to a wider audience.
 
-### User Discovery
-- **Group and Event Recommendations**: Help users discover other groups or events hosted by the same or similar protocols.
-- **Analytics-Driven Suggestions**: Recommend groups based on participation patterns and interests.
+### For Art Enthusiasts
+- **Art Viewing**: Users can browse and view art published by various artists.
+- **Bidding**: Users can bid on art pieces they are interested in purchasing.
+- **Support Artists**: Users can support their favorite artists by contributing to their campaigns.
 
-### Community Benefits
-- **Verified Users**: Ensure that members meet predefined criteria for engagement, creating a more meaningful group experience.
-- **Higher Engagement**: Attract participants who are more likely to contribute and respond actively.
-- **Cross-Community Awareness**: Promote awareness of related communities and events.
+### Platform Benefits
+- **Sustainability**: The platform benefits from art bidding, enabling it to sustain and run effectively.
+- **Community Engagement**: Promotes engagement between artists and their supporters, fostering a vibrant art community.
 
 ---
 
@@ -26,8 +26,8 @@ GateKeep is a Telegram mini-app designed to empower Web3 protocols, DAOs, and ot
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/pratiksardar/gatekeep.git
-   cd gatekeep
+   git clone https://github.com/pratiksardar/artsupport.git
+   cd artsupport
    ```
 
 2. Install dependencies:
@@ -59,8 +59,8 @@ Contributions are welcome! Please read the [CONTRIBUTING](CONTRIBUTING.md) file 
 
 ## 📞 Contact
 
-For any inquiries, please contact us at [support@gatekeep.com](mailto:radarsardar@gmail.com).
+For any inquiries, please contact us at [support@artsupport.com](mailto:support@artsupport.com).
 
 ## 🤝 Contributors
 
-SaraGabriela | NathaliaBarreiros | Nidhi | Pratik
+SaraGabriela | Nidhi | Pratik
