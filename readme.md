@@ -1,4 +1,4 @@
-# Artify
+# Cookies 4m Groupies
 
 ArtSupport is a platform designed to empower artists by providing them with tools to build profiles, create campaigns for support, and publish their art. It also allows art enthusiasts to view, bid on, and support their favorite artists. The platform benefits from art bidding, enabling it to sustain and run effectively.
 
@@ -26,8 +26,8 @@ ArtSupport is a platform designed to empower artists by providing them with tool
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/pratiksardar/artsupport.git
-   cd artsupport
+   git clone https://github.com/pratiksardar/cookies-4m-groupies.git
+   cd cookies-4m-groupies
    ```
 
 2. Install dependencies:
