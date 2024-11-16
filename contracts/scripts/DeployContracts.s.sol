@@ -13,11 +13,10 @@ contract DeployContracts is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        // 1. Deploy ArtistCrowdfunding first with a zero address for NFT
+        // 1. Deploy ArtistCrowdfunding first
         ArtistCrowdfunding crowdfunding = new ArtistCrowdfunding(
             owner,
-            tokenAddress,
-            address(0) // Initially set NFT contract to zero address
+            tokenAddress
         );
 
         // 2. Deploy SponsorshipNFT with the crowdfunding address
