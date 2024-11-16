@@ -222,7 +222,6 @@ contract ArtistCrowdfunding is IArtistCrowdFunding, Ownable, Pausable {
         if (!IERC20(token_).transfer(owner(), balance)) revert TransferFailed();
     }
 
-    // Add this function to your ArtistCrowdfunding contract
     function setSponsorshipNFT(address _nftContract) external onlyOwner {
         sponsorshipNFT = ISponsorshipNFT(_nftContract);
     }

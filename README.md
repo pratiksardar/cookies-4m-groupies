@@ -52,7 +52,7 @@ A web3 dApp empowering independent artists and their supporters through decentra
 
 ## 🛠️ Technology Stack  
 - **Frontend**: React / Next.js for a seamless user experience.  
-- **Blockchain**: Ethereum / Polygon for NFT minting and staking.  
+- **Blockchain**: Ethereum for NFT minting and staking.  
 - **Smart Contracts**: Solidity-based contracts for secure transactions.  
 - **Backend**: Node.js for scalable API endpoints.  
 - **Storage**: IPFS for decentralized NFT storage.  
