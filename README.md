@@ -52,9 +52,9 @@ A web3 dApp empowering independent artists and their supporters through decentra
 
 ## 🛠️ Technology Stack  
 - **Frontend**: React & Nouns UI for a seamless user experience.  
-- **Blockchain**: Scroll, Hedera, Polygon  , Morph, Mantel and Flow networks
-- **Explorer**: Blockscan
-- **Onboarding scan**: Dynamic.xyz
+- **Blockchain**: Scroll, Hedera, Polygon zkEVM  , Morph, Mantel and Flow networks
+- **Explorer**: Blockscout
+- **Onboarding**: Dynamic.xyz
 - **Notifications**:Push Protocol 
 - **Generating Random numbers**: Pyth
 - **Smart Contracts**: Solidity-based contracts for secure transactions. 
@@ -78,6 +78,41 @@ A web3 dApp empowering independent artists and their supporters through decentra
 - Educational Resources for Artists
 - DAO Governance
 
+---
+
+## Deployed Contracts and addresses:
+
+Flow - \
+The reason to build on Flow is because it is an consumer app focused chain which values content and content creators, artists on flow would be able to join the leverage the platform reacher greater heights with it's existing collabs and platform integration. \
+Artist:
+NFT: 
+
+---
+Polygon zkEVM - \
+Artist : 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52 \
+NFT : 0x3043F370651cC97D3E91789EE1F52C24e883fFA7
+
+---
+
+Hedera - \
+Artist:
+NFT: 
+
+---
+
+Scroll - \
+Artist contract: 0x1e14B54d7D4fe19f7e9c4567085B3515c227CeC9 \
+NFT: 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52 \
+
+----
+Mantle - \ Artist Contract: 0x1e14B54d7D4fe19f7e9c4567085B3515c227CeC9 \
+NFT : 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52\
+
+---
+
+Morph: 
+Artist: 0x1e14B54d7D4fe19f7e9c4567085B3515c227CeC9 \
+NFT: 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52 \
 
 ---
 
