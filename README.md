@@ -51,16 +51,33 @@ A web3 dApp empowering independent artists and their supporters through decentra
 ---
 
 ## 🛠️ Technology Stack  
-- **Frontend**: React / Next.js for a seamless user experience.  
-- **Blockchain**: Ethereum for NFT minting and staking.  
-- **Smart Contracts**: Solidity-based contracts for secure transactions.  
-- **Backend**: Node.js for scalable API endpoints.  
-- **Storage**: IPFS for decentralized NFT storage.  
+- **Frontend**: React & Nouns UI for a seamless user experience.  
+- **Blockchain**: Scroll, Hedera, Polygon  , Morph, Mantel and Flow networks
+- **Explorer**: Blockscan
+- **Onboarding scan**: Dynamic.xyz
+- **Notifications**:Push Protocol 
+- **Generating Random numbers**: Pyth
+- **Smart Contracts**: Solidity-based contracts for secure transactions. 
+- **Storage**: Akave for decentralized NFT storage.  
 
 ---
 
 ## 🎯 Vision  
 **Cookies From Groupies** aims to revolutionize how local independent artists sustain their creativity by offering them decentralized tools for financial growth and fan engagement.
+
+---
+## 🛣️ Roadmap
+-  Enhanced Artist Discovery: AI-Powered Recommendations, Geolocation-Based Discovery, Geolocation-Based Discovery
+
+- Collaborative Features: Group Support Campaigns, Collaboration Tools for Artists
+- Advanced NFT Features: Fractionalized NFTs, Dynamic NFTs
+- Community and Social Features: Token-Gated Communities, Events and Livestreams
+- Mobile and AR/VR Experiences
+- Subscription Models
+- Artist Analytics
+- Educational Resources for Artists
+- DAO Governance
+
 
 ---
 
@@ -84,4 +101,5 @@ Have questions or feedback? Reach out at **radarsardar@gmail.com**.
 
 ## 🤝 Contributors
 
-SaraGabriela | Nidhi | Pratik
+Find us on X (formerly Twitter @ )
+[Sara](https://x.com/holasari_) | [Nidhi](https://x.com/nidhisinghattri) | [Pratik](https://x.com/pratik_sardar)
