@@ -9,8 +9,7 @@ A web3 dApp empowering independent artists and their supporters through decentra
 ---
 
 ## Demo Video
-[![Watch the video](https://github.com/pratiksardar/cookies-4m-groupies/blob/main/image.png)](https://youtu.be/jU5_Dvzpc74)
-
+[![Watch the video](https://github.com/pratiksardar/cookies-4m-groupies/blob/main/image.png)](https://www.youtube.com/watch?v=jU5_Dvzpc74)
 
 ## 🎨 Features  
 
