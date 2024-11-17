@@ -1,0 +1,72 @@
+/* ////////////////////////////////////////
+
+Your custom css here
+
+/////////////////////////////////////////*/
+.btn {
+    
+    border-radius: 30px;
+}
+.btn-amarillo {
+    background-color: #FFB913;
+}
+
+.btn-azul {
+    background-color: #007BFF;
+    ;
+}
+
+.btn-wallet {
+    margin-left: 15px;
+}
+
+.btn-big{
+    border: 2px solid #212529;
+    font-size: 1.5rem;
+    font-weight: 800;
+    border-radius: 30px;
+    margin-right: 20px;
+    padding: 15px;
+
+}
+
+/* Botón */
+#connectButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #FFB913;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#connectButton.connected {
+    background-color: #28a745;
+}
+
+/* Loader */
+.loader {
+    margin-left: 10px;
+    border: 3px solid #ffe100;
+    border-top: 3px solid #007BFF;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Animación del loader */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.rojo {
+    color: #F50026;
+}
