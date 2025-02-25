@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  :root[class='light'] {
+    --background: 229 217 201;
+    --text-primary: 20 33 61;
+    --text-secondary: 20 33 61 / 0.7;
+  }
+
+  :root[class='dark'] {
+    --background: 23 23 23;
+    --text-primary: 255 255 255;
+    --text-secondary: 255 255 255 / 0.7;
+  }
+
+  body {
+    @apply bg-[rgb(var(--background))] text-[rgb(var(--text-primary))] transition-colors duration-200;
+    font-family: 'Londrina Solid', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-londrina;
+  }
+}
+
+.theme-transition {
+  @apply transition-colors duration-200;
+}
+
+/* Custom shadow for cards and buttons */
+.shadow-custom {
+  @apply transition-shadow duration-200;
+}
+
+.light .shadow-custom {
+  box-shadow: 8px 8px 0px #14213D;
+}
+
+.dark .shadow-custom {
+  box-shadow: 8px 8px 0px theme('colors.primary.500');
+}
+
+/* Small custom shadows */
+.shadow-custom-sm {
+  @apply transition-shadow duration-200;
+}
+
+.light .shadow-custom-sm {
+  box-shadow: 4px 4px 0px #14213D;
+}
+
+.dark .shadow-custom-sm {
+  box-shadow: 4px 4px 0px theme('colors.primary.500');
+}
+
+/* Smooth transitions for theme changes */
+* {
+  @apply transition-colors duration-200;
+}

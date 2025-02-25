@@ -7,6 +7,7 @@ A web3 dApp empowering independent artists and their supporters through decentra
 **Cookies From Groupies** is a decentralized application (dApp) that bridges the gap between artists and their audiences. It allows artists to build their online profiles, showcase their work, and receive support in creative ways. Fans can explore artist profiles, support them through donations, purchase NFTs, and even stake tokens to share in the yields generated. Supporters unlock exclusive content and gain access to token-gated chats with the artists they support.
 
 ---
+# Latest Hosted website: https://elaborate-pastelito-739750.netlify.app/ 
 
 ## Demo Video
 [![Watch the video](https://github.com/pratiksardar/cookies-4m-groupies/blob/main/image.png)](https://www.youtube.com/watch?v=jU5_Dvzpc74)
@@ -87,33 +88,11 @@ A web3 dApp empowering independent artists and their supporters through decentra
 
 Flow - \
 The reason to build on Flow is because it is an consumer app focused chain which values content and content creators, artists on flow would be able to join the leverage the platform reacher greater heights with it's existing collabs and platform integration. \
-Artist:
-NFT: 
 
----
-Polygon zkEVM - \
-Artist : 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52 \
-NFT : 0x3043F370651cC97D3E91789EE1F52C24e883fFA7
 
 ---
 
-Hedera - \
-Artist:
-NFT: 
-
----
-
-Scroll - \
-Artist contract: 0x1e14B54d7D4fe19f7e9c4567085B3515c227CeC9 \
-NFT: 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52 \
-
-----
-Mantle - \ Artist Contract: 0x1e14B54d7D4fe19f7e9c4567085B3515c227CeC9 \
-NFT : 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52\
-
----
-
-Morph: 
+Celo: 
 Artist: 0x1e14B54d7D4fe19f7e9c4567085B3515c227CeC9 \
 NFT: 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52 \
 
