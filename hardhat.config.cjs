@@ -17,29 +17,30 @@ const config = {
     hardhat: {
       chainId: 1337
     },
-    "base-sepolia": {
-      url: "https://sepolia.base.org",
+    "alfajores-celo": {
+      url: "https://alfajores-forno.celo-testnet.org",
       accounts: [PRIVATE_KEY],
-      chainId: 84532,
+      chainId: 44787,
       gasPrice: "auto",
       verify: {
         etherscan: {
-          apiUrl: "https://api-sepolia.basescan.org"
+          apiURL: "https://api-alfajores.celoscan.io/api",
+          browserURL: "https://alfajores.celoscan.io"
         }
       }
     }
   },
-  etherscan: {
+  celoscan: {
     apiKey: {
-      "base-sepolia": process.env.BASESCAN_API_KEY || ""
+      "celo": process.env.CELOCAN_API_KEY || ""
     },
     customChains: [
       {
-        network: "base-sepolia",
-        chainId: 84532,
+        network: "celo",
+        chainId: 42220,
         urls: {
-          apiURL: "https://api-sepolia.basescan.org/api",
-          browserURL: "https://sepolia.basescan.org"
+          apiURL: "https://api.celoscan.org/api",
+          browserURL: "https://celoscan.io"
         }
       }
     ]

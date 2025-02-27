@@ -9,8 +9,10 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "compile": "hardhat compile",
-    "deploy:base-sepolia": "node --loader ts-node/esm scripts/deploy.ts --network base-sepolia",
-    "verify:base-sepolia": "hardhat verify --network base-sepolia"
+    "deploy:alfajores": "node --loader ts-node/esm scripts/deploy.ts --network alfajores",
+    "verify:alfajores": "hardhat verify --network alfajores",
+    "deploy:celo": "node --loader ts-node/esm scripts/deploy.ts --network celo",
+    "verify:celo": "hardhat verify --network celo"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",

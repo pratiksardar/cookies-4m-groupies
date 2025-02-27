@@ -92,9 +92,11 @@ The reason to build on Flow is because it is an consumer app focused chain which
 
 ---
 
-Celo: 
-Artist: 0x1e14B54d7D4fe19f7e9c4567085B3515c227CeC9 \
-NFT: 0x6b948AD2758fE42fE38c07ACe4DAF8146C81cA52 \
+Celo-alfajores: 
+ArtistDonation: Contract_address \
+ArtistStaking: Contract_address \
+CookiesToken: Contract_address \
+
 
 ---
 
