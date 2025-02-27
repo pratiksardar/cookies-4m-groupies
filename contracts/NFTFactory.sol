@@ -2,41 +2,70 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract NFTFactory is ERC721, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+contract NFTCollection is ERC721, ERC721URIStorage, Ownable {
+    uint256 private _nextTokenId;
 
-    // Mapping from token ID to artwork metadata URI
-    mapping(uint256 => string) private _tokenURIs;
-    
-    // Mapping from token ID to artist address
-    mapping(uint256 => address) public artistOf;
+    constructor(
+        string memory name,
+        string memory symbol,
+        address initialOwner
+    ) ERC721(name, symbol) Ownable(initialOwner) {}
 
-    constructor() ERC721("ArtistPlatformNFT", "ARTNFT") Ownable(msg.sender) {}
+    function safeMint(address to, string memory uri) public onlyOwner {
+        uint256 tokenId = _nextTokenId++;
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
+    }
 
-    function createNFT(address artist, string memory tokenURI) public returns (uint256) {
-        require(artist != address(0), "Invalid artist address");
+    // The following functions are overrides required by Solidity
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+}
+
+contract NFTFactory {
+    event CollectionCreated(
+        address indexed collectionAddress,
+        address indexed owner,
+        string name,
+        string symbol
+    );
+
+    address[] public allCollections;
+    mapping(address => address[]) public ownerCollections;
+
+    function createNFTCollection(string memory name, string memory symbol) external {
+        NFTCollection newCollection = new NFTCollection(name, symbol, msg.sender);
+        address collectionAddress = address(newCollection);
         
-        _tokenIds.increment();
-        uint256 newTokenId = _tokenIds.current();
-
-        _safeMint(artist, newTokenId);
-        _setTokenURI(newTokenId, tokenURI);
-        artistOf[newTokenId] = artist;
-
-        return newTokenId;
+        allCollections.push(collectionAddress);
+        ownerCollections[msg.sender].push(collectionAddress);
+        
+        emit CollectionCreated(collectionAddress, msg.sender, name, symbol);
     }
 
-    function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal {
-        require(_exists(tokenId), "URI set of nonexistent token");
-        _tokenURIs[tokenId] = _tokenURI;
+    function getCollectionsByOwner(address owner) external view returns (address[] memory) {
+        return ownerCollections[owner];
     }
 
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        require(_exists(tokenId), "URI query for nonexistent token");
-        return _tokenURIs[tokenId];
+    function getAllCollections() external view returns (address[] memory) {
+        return allCollections;
     }
 }

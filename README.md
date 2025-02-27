@@ -66,6 +66,11 @@ A web3 dApp empowering independent artists and their supporters through decentra
 
 ---
 
+## Arch
+![Arch Diagram](c4g.png)
+
+---
+
 ## 🎯 Vision  
 **Cookies From Groupies** aims to revolutionize how local independent artists sustain their creativity by offering them decentralized tools for financial growth and fan engagement.
 
