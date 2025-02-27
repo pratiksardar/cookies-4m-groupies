@@ -30,6 +30,7 @@ async function main() {
 
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
+  console.log("Network:", network.name);
 
   // Deploy CookiesToken first
   const CookiesToken = await ethers.getContractFactory("CookiesToken");
@@ -54,16 +55,30 @@ async function main() {
   await artistDonation.waitForDeployment();
   console.log("ArtistDonation deployed to:", await artistDonation.getAddress());
 
-  // Deploy ArtistStaking with USDC address (use Base Sepolia USDC address)
-  const usdcAddress = "0x036CbD53842c5426634e7929541eC2318f3dCF7e"; // Base Sepolia USDC
+  // Get the appropriate stablecoin address based on the network
+  let stablecoinAddress;
+  if (network.name === "celo") {
+    // Celo Dollar (cUSD) on Celo mainnet
+    stablecoinAddress = "0x765DE816845861e75A25fCA122bb6898B8B1282a";
+  } else if (network.name === "alfajores") {
+    // Celo Dollar (cUSD) on Alfajores testnet
+    stablecoinAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
+  } else {
+    // Default to a placeholder for local testing
+    stablecoinAddress = "0x0000000000000000000000000000000000000000";
+    console.warn("Using placeholder stablecoin address for network:", network.name);
+  }
+
+  // Deploy ArtistStaking with appropriate stablecoin address
   const ArtistStaking = await ethers.getContractFactory("ArtistStaking");
   const artistStaking = await ArtistStaking.deploy(
-    usdcAddress,
+    stablecoinAddress,
     await cookiesToken.getAddress(),
     platformWallet
   );
   await artistStaking.waitForDeployment();
   console.log("ArtistStaking deployed to:", await artistStaking.getAddress());
+  console.log("Using stablecoin address:", stablecoinAddress);
 
   // Grant minter role to ArtistStaking contract
   const minterRole = await cookiesToken.addMinter(await artistStaking.getAddress());
@@ -81,10 +96,10 @@ async function main() {
   // Verify contracts
   console.log("\nVerifying contracts...");
   console.log("Run the following commands to verify your contracts:");
-  console.log(`npx hardhat verify --network base-sepolia ${await cookiesToken.getAddress()}`);
-  console.log(`npx hardhat verify --network base-sepolia ${await nftFactory.getAddress()}`);
-  console.log(`npx hardhat verify --network base-sepolia ${await artistDonation.getAddress()} ${platformWallet}`);
-  console.log(`npx hardhat verify --network base-sepolia ${await artistStaking.getAddress()} ${usdcAddress} ${await cookiesToken.getAddress()} ${platformWallet}`);
+  console.log(`npx hardhat verify --network ${network.name} ${await cookiesToken.getAddress()}`);
+  console.log(`npx hardhat verify --network ${network.name} ${await nftFactory.getAddress()}`);
+  console.log(`npx hardhat verify --network ${network.name} ${await artistDonation.getAddress()} ${platformWallet}`);
+  console.log(`npx hardhat verify --network ${network.name} ${await artistStaking.getAddress()} ${stablecoinAddress} ${await cookiesToken.getAddress()} ${platformWallet}`);
 }
 
 main()
