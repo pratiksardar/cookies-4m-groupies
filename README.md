@@ -98,10 +98,16 @@ The reason to build on Flow is because it is an consumer app focused chain which
 ---
 
 Celo-alfajores: 
-ArtistDonation: Contract_address \
-ArtistStaking: Contract_address \
-CookiesToken: Contract_address \
+- ArtistDonation: `0xc6724370cB2CD753189Ee8Ed52a1Ffeaae92e687`
+- ArtistStaking: `0x964c2578FAaF895624F761326d4113031eabA147`
+- CookiesToken: `0xf981A370B218bF8a7E7205F4dA5dd9aBD96649d6`
+- NFTFactory: `0x9A5D90657CCa0849DB08C590f3eD16cBE4965397`
 
+All contracts are verified on CeloScan. You can view them at:
+- ArtistDonation: https://alfajores.celoscan.io/address/0xc6724370cb2cd753189ee8ed52a1ffeaae92e687
+- ArtistStaking: https://alfajores.celoscan.io/address/0x964c2578faaf895624f761326d4113031eaba147
+- CookiesToken: https://alfajores.celoscan.io/address/0xf981A370B218bF8a7E7205F4dA5dd9aBD96649d6
+- NFTFactory: https://alfajores.celoscan.io/address/0x9a5d90657cca0849db08c590f3ed16cbe4965397
 
 ---
 

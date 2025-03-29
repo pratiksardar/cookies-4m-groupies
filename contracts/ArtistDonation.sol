@@ -35,5 +35,4 @@ contract ArtistDonation is Ownable {
     function updatePlatformWallet(address _newWallet) external onlyOwner {
         require(_newWallet != address(0), "Invalid wallet address");
         platformWallet = _newWallet;
-    }
-}
+    }}
