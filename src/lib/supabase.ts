@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 import type { Database } from '../types/supabase';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -8,25 +8,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient<Database>(
-  supabaseUrl,
-  supabaseAnonKey,
-  {
-    auth: {
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: true
-    },
-    global: {
-      headers: {
-        'x-application-name': 'cookies4mgroupies'
-      }
-    },
-    db: {
-      schema: 'public'
-    }
-  }
-);
+export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
 
 // Add error handling helpers
 export const handleSupabaseError = (error: any) => {

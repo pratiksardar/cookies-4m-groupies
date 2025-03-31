@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useWallet } from '../hooks/useWallet';
 import { useTheme } from './ThemeProvider';
 import { WalletModal } from './WalletModal';
+import { NetworkIndicator } from './NetworkIndicator';
 
 function Navbar() {
   const location = useLocation();
@@ -54,6 +55,7 @@ function Navbar() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {address && <NetworkIndicator />}
               {address ? (
                 <div className="flex items-center space-x-4">
                   <span className="text-sm font-londrina text-[rgb(var(--text-primary))]">
