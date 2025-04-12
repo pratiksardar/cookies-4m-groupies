@@ -1,3 +1,70 @@
+# Cookies 4M Groupies
+
+A monorepo containing the frontend, smart contracts, and backend for the Cookies 4M Groupies project.
+
+## Project Structure
+
+```
+cookies-4m-groupies/
+├── frontend/           # React frontend application
+├── smart-contracts/    # Solidity smart contracts
+└── backend/           # Backend services and APIs
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- Hardhat (for smart contracts)
+- Supabase CLI (for backend)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/your-username/cookies-4m-groupies.git
+cd cookies-4m-groupies
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+### Development
+
+#### Frontend
+```bash
+npm run frontend:dev
+```
+
+#### Smart Contracts
+```bash
+npm run contracts:compile
+npm run contracts:test
+```
+
+#### Backend
+```bash
+npm run backend:dev
+```
+
+## Contributing
+
+Please read our contributing guidelines before submitting pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 # Cookies From Groupies 🍪🎨  
 A web3 dApp empowering independent artists and their supporters through decentralized innovation.
 
