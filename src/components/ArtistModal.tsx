@@ -10,14 +10,14 @@ import { useWallet } from '../hooks/useWallet';
 interface ArtistModalProps {
   isOpen: boolean;
   onClose: () => void;
-  artist: Artist & {
+  artist: (Artist & {
     profile: {
       username: string;
       bio?: string;
       avatar_url?: string;
     };
     artworks: Artwork[];
-  };
+  }) | null;
 }
 
 export function ArtistModal({ isOpen, onClose, artist }: ArtistModalProps) {
@@ -27,12 +27,14 @@ export function ArtistModal({ isOpen, onClose, artist }: ArtistModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && artist?.id) {
       fetchComments();
     }
-  }, [isOpen, artist.id]);
+  }, [isOpen, artist?.id]);
 
   const fetchComments = async () => {
+    if (!artist?.id) return;
+    
     try {
       const { data, error } = await supabase
         .from('comments')
@@ -52,7 +54,7 @@ export function ArtistModal({ isOpen, onClose, artist }: ArtistModalProps) {
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!address || !comment.trim()) return;
+    if (!address || !comment.trim() || !artist?.id) return;
 
     setIsLoading(true);
     try {
@@ -84,6 +86,8 @@ export function ArtistModal({ isOpen, onClose, artist }: ArtistModalProps) {
     }
   };
 
+  if (!artist) return null;
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -114,13 +118,13 @@ export function ArtistModal({ isOpen, onClose, artist }: ArtistModalProps) {
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex items-center space-x-4">
                     <img
-                      src={artist.profile.avatar_url || 'https://via.placeholder.com/128'}
-                      alt={artist.profile.username}
+                      src={artist.profile?.avatar_url || 'https://via.placeholder.com/128'}
+                      alt={artist.profile?.username}
                       className="w-16 h-16 rounded-full object-cover border-4 border-[#14213D] dark:border-primary-500"
                     />
                     <div>
                       <Dialog.Title className="text-2xl font-londrina font-bold text-[#14213D] dark:text-white">
-                        {artist.profile.username}
+                        {artist.profile?.username}
                       </Dialog.Title>
                       <p className="text-[#14213D]/60 dark:text-gray-400">{artist.category}</p>
                     </div>
@@ -133,7 +137,7 @@ export function ArtistModal({ isOpen, onClose, artist }: ArtistModalProps) {
                   </button>
                 </div>
 
-                {artist.profile.bio && (
+                {artist.profile?.bio && (
                   <p className="text-[#14213D] dark:text-white mb-6">{artist.profile.bio}</p>
                 )}
 
@@ -143,7 +147,7 @@ export function ArtistModal({ isOpen, onClose, artist }: ArtistModalProps) {
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <AnimatePresence>
-                      {artist.artworks.map((artwork) => (
+                      {artist.artworks?.map((artwork) => (
                         <motion.div
                           key={artwork.id}
                           layout
@@ -211,23 +215,20 @@ export function ArtistModal({ isOpen, onClose, artist }: ArtistModalProps) {
 
                   <div className="space-y-4">
                     {comments.map((comment) => (
-                      <div
-                        key={comment.id}
-                        className="bg-white dark:bg-neutral-800 rounded-lg p-4"
-                      >
-                        <div className="flex items-center space-x-3 mb-2">
-                          <img
-                            src={comment.profile?.avatar_url || 'https://via.placeholder.com/32'}
-                            alt={comment.profile?.username}
-                            className="w-8 h-8 rounded-full"
-                          />
-                          <span className="font-londrina text-[#14213D] dark:text-white">
+                      <div key={comment.id} className="flex space-x-3">
+                        <img
+                          src={comment.profile?.avatar_url || 'https://via.placeholder.com/32'}
+                          alt={comment.profile?.username}
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <div>
+                          <p className="font-londrina text-[#14213D] dark:text-white">
                             {comment.profile?.username}
-                          </span>
+                          </p>
+                          <p className="text-[#14213D]/60 dark:text-gray-400">
+                            {comment.content}
+                          </p>
                         </div>
-                        <p className="text-[#14213D]/80 dark:text-gray-300">
-                          {comment.content}
-                        </p>
                       </div>
                     ))}
                   </div>

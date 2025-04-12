@@ -5,6 +5,7 @@ import ArtistListing from './pages/ArtistListing';
 import Gallery from './pages/Gallery';
 import Groupies from './pages/Groupies';
 import Landing from './pages/Landing';
+import StakePage from './pages/Stake';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/artist-listing" element={<ArtistListing />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/groupies" element={<Groupies />} />
+            <Route path="/stake" element={<StakePage />} />
             <Route path="/" element={<Landing />} />
           </Routes>
         </main>

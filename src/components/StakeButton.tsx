@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useWallet } from '../hooks/useWallet';
 import { ethers } from 'ethers';
-import { Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, TextField, Slider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ARTIST_STAKING_ADDRESS, CUSD_TOKEN_ADDRESS } from '../config/contracts';
+import { ARTIST_STAKING_ADDRESS } from '../config/contracts';
 import ArtistStakingABI from '../abi/ArtistStaking.json';
 import { supabase } from '../lib/supabase';
 
@@ -31,6 +31,19 @@ const StyledTextField = styled(TextField)({
   },
 });
 
+const StyledSlider = styled(Slider)({
+  color: '#FCA311',
+  '& .MuiSlider-thumb': {
+    backgroundColor: '#FCA311',
+  },
+  '& .MuiSlider-track': {
+    backgroundColor: '#FCA311',
+  },
+  '& .MuiSlider-rail': {
+    backgroundColor: 'rgba(252, 163, 17, 0.3)',
+  },
+});
+
 interface StakeButtonProps {
   artistAddress: string;
   onSuccess?: () => void;
@@ -38,83 +51,61 @@ interface StakeButtonProps {
 
 export const StakeButton = ({ artistAddress, onSuccess }: StakeButtonProps) => {
   const [open, setOpen] = useState(false);
-  const [amount, setAmount] = useState('');
+  const [percentage, setPercentage] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentDelegation, setCurrentDelegation] = useState<number>(0);
   const { provider, address, signer } = useWallet();
 
-  const handleStake = async () => {
-    if (!provider || !address || !amount) {
-      setError("Wallet not connected or amount not specified");
-      return;
+  useEffect(() => {
+    if (open && address && artistAddress) {
+      fetchCurrentDelegation();
     }
+  }, [open, address, artistAddress]);
 
-    // Reset error state
-    setError(null);
-
-    // Validate artist address
-    if (!artistAddress || artistAddress === "null" || artistAddress === "undefined" || !ethers.isAddress(artistAddress)) {
-      setError("Invalid artist address. Please contact support.");
-      console.error("Invalid artist address:", artistAddress);
-      return;
-    }
-
-    console.log("Starting staking with params:", {
-      stakerAddress: address,
-      artistAddress,
-      amount,
-      tokenAddress: CUSD_TOKEN_ADDRESS,
-      contractAddress: ARTIST_STAKING_ADDRESS
-    });
+  const fetchCurrentDelegation = async () => {
+    if (!provider || !address) return;
 
     try {
-      setLoading(true);
-      
-      // Get signer directly from wallet hook or from provider
+      const contract = new ethers.Contract(
+        ARTIST_STAKING_ADDRESS,
+        ArtistStakingABI,
+        provider
+      );
+
+      const delegation = await contract.delegations(address, artistAddress);
+      setCurrentDelegation(delegation.toNumber());
+      setPercentage(delegation.toNumber());
+    } catch (error) {
+      console.error('Error fetching delegation:', error);
+    }
+  };
+
+  const handleDelegate = async () => {
+    if (!provider || !address || !artistAddress) {
+      setError("Wallet not connected or invalid artist address");
+      return;
+    }
+
+    setError(null);
+    setLoading(true);
+
+    try {
       const contractSigner = signer || await provider.getSigner();
-      if (!contractSigner) {
-        throw new Error("Failed to get signer");
-      }
       
       // Create contract instance
       const contract = new ethers.Contract(
-        ARTIST_STAKING_ADDRESS, 
-        ArtistStakingABI, 
+        ARTIST_STAKING_ADDRESS,
+        ArtistStakingABI,
         contractSigner
       );
 
-      if (!contract) {
-        throw new Error("Failed to create contract instance");
-      }
-      
-      // First, we need to approve the token transfer
-      const tokenContract = new ethers.Contract(
-        CUSD_TOKEN_ADDRESS,
-        [
-          "function approve(address spender, uint256 amount) returns (bool)",
-          "function allowance(address owner, address spender) view returns (uint256)"
-        ],
-        contractSigner
-      );
-      
-      // Convert amount to wei (assuming 18 decimals)
-      const amountWei = ethers.parseEther(amount);
-      
-      // Approve the contract to spend tokens
-      console.log("Approving token transfer...");
-      const approveTx = await tokenContract.approve(ARTIST_STAKING_ADDRESS, amountWei);
-      await approveTx.wait();
-      console.log("Token transfer approved");
-      
-      // Send stake transaction
-      console.log("Sending stake transaction...");
-      const tx = await contract.stake(amountWei);
-      console.log("Transaction sent:", tx.hash);
-      
+      // Send delegate transaction
+      console.log("Delegating rewards...");
+      const tx = await contract.delegate(artistAddress, percentage);
       const receipt = await tx.wait();
-      console.log("Transaction confirmed:", receipt);
 
-      // Save stake to database
+      // Save delegation to database
       const { data: profileData } = await supabase
         .from('profiles')
         .select('id')
@@ -128,12 +119,10 @@ export const StakeButton = ({ artistAddress, onSuccess }: StakeButtonProps) => {
         .single();
 
       if (profileData && artistData) {
-        const { error: dbError } = await supabase.from('stakes').insert({
-          staker_id: profileData.id,
+        const { error: dbError } = await supabase.from('delegations').insert({
+          delegator_id: profileData.id,
           artist_id: artistData.id,
-          amount: amount,
-          stablecoin_address: CUSD_TOKEN_ADDRESS,
-          status: 'active',
+          percentage: percentage,
           transaction_hash: receipt.hash,
         });
 
@@ -141,11 +130,10 @@ export const StakeButton = ({ artistAddress, onSuccess }: StakeButtonProps) => {
       }
 
       setOpen(false);
-      setAmount('');
       onSuccess?.();
     } catch (err: any) {
-      console.error('Staking failed:', err);
-      let errorMessage = 'Failed to process staking. ';
+      console.error('Delegation failed:', err);
+      let errorMessage = 'Failed to delegate rewards. ';
       
       if (err.reason) {
         errorMessage += err.reason;
@@ -165,7 +153,7 @@ export const StakeButton = ({ artistAddress, onSuccess }: StakeButtonProps) => {
     <>
       {!artistAddress || !ethers.isAddress(artistAddress) ? (
         <div className="inline-block bg-gray-400 opacity-50 px-4 py-2 rounded-lg font-londrina text-[#14213D] cursor-not-allowed">
-          Stake 
+          Delegate 
           <span className="text-xs ml-1 align-top">(unavailable)</span>
         </div>
       ) : (
@@ -174,7 +162,7 @@ export const StakeButton = ({ artistAddress, onSuccess }: StakeButtonProps) => {
           onClick={() => setOpen(true)}
           disabled={!address}
         >
-          Stake
+          Delegate
         </button>
       )}
 
@@ -182,32 +170,45 @@ export const StakeButton = ({ artistAddress, onSuccess }: StakeButtonProps) => {
         open={open} 
         onClose={() => !loading && setOpen(false)}
       >
-        <DialogTitle className="font-londrina text-2xl">Stake cUSD</DialogTitle>
+        <DialogTitle className="font-londrina text-2xl">Delegate COOKIES Rewards</DialogTitle>
         <DialogContent>
-          <div className="mb-4 text-sm text-gray-300">
-            Stake cUSD to earn COOKIES tokens. Your COOKIES earnings will be streamed to the artist.
+          <div className="mb-6 text-sm text-gray-300">
+            Choose what percentage of your COOKIES rewards to delegate to this artist.
+            {currentDelegation > 0 && (
+              <p className="mt-2">Current delegation: {currentDelegation}%</p>
+            )}
           </div>
-          <StyledTextField
-            autoFocus
-            margin="dense"
-            label="Amount (cUSD)"
-            type="number"
-            fullWidth
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            disabled={loading}
-          />
+          
+          <div className="mb-6">
+            <p className="mb-2 text-sm text-gray-300">Percentage to Delegate</p>
+            <StyledSlider
+              value={percentage}
+              onChange={(_, value) => setPercentage(value as number)}
+              valueLabelDisplay="auto"
+              step={1}
+              marks
+              min={0}
+              max={100}
+            />
+            <div className="flex justify-between text-sm text-gray-300">
+              <span>0%</span>
+              <span>50%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
           {error && (
-            <div className="text-red-500 mt-2 text-sm">
+            <div className="text-red-500 mt-2 text-sm mb-4">
               {error}
             </div>
           )}
+
           <button
-            onClick={handleStake}
-            disabled={loading || !amount}
-            className="w-full mt-4 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-londrina transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleDelegate}
+            disabled={loading || percentage === currentDelegation}
+            className="w-full mt-4 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-londrina transition-colors duration-200 disabled:opacity-50"
           >
-            {loading ? 'Processing...' : 'Confirm Stake'}
+            {loading ? 'Processing...' : 'Confirm Delegation'}
           </button>
         </DialogContent>
       </StyledDialog>

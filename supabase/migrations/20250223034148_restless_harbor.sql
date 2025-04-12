@@ -82,13 +82,15 @@ CREATE TABLE artworks (
 CREATE TABLE stakes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   staker_id uuid REFERENCES profiles(id) NOT NULL,
-  artist_id uuid REFERENCES artists(id) NOT NULL,
+  artist_id uuid REFERENCES artists(id),
   amount numeric(20,2) NOT NULL,
   stablecoin_address text NOT NULL,
   cookies_earned numeric(20,2) DEFAULT 0,
   start_date timestamptz DEFAULT now(),
   end_date timestamptz,
   status text DEFAULT 'active',
+  transaction_hash text NOT NULL,
+  approve_transaction_hash text,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );
@@ -118,6 +120,17 @@ CREATE TABLE donations (
   created_at timestamptz DEFAULT now()
 );
 
+-- Delegations table
+CREATE TABLE delegations (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  delegator_id uuid REFERENCES profiles(id) NOT NULL,
+  artist_id uuid REFERENCES artists(id) NOT NULL,
+  percentage integer NOT NULL CHECK (percentage >= 0 AND percentage <= 100),
+  transaction_hash text NOT NULL,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
 -- Enable Row Level Security
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE artists ENABLE ROW LEVEL SECURITY;
@@ -125,6 +138,7 @@ ALTER TABLE artworks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE stakes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE purchases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE donations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE delegations ENABLE ROW LEVEL SECURITY;
 
 -- Profiles Policies
 CREATE POLICY "Public profiles are viewable by everyone"
@@ -237,6 +251,31 @@ CREATE POLICY "Users can create donations"
     EXISTS (
       SELECT 1 FROM profiles
       WHERE profiles.id = donations.donor_id
+      AND profiles.wallet_address = auth.uid()::text
+    )
+  );
+
+-- Delegations Policies
+CREATE POLICY "Delegations are viewable by involved parties"
+  ON delegations FOR SELECT
+  TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE (profiles.id = delegations.delegator_id OR profiles.id IN (
+        SELECT profile_id FROM artists WHERE id = delegations.artist_id
+      ))
+      AND profiles.wallet_address = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "Users can manage their own delegations"
+  ON delegations FOR ALL
+  TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = delegations.delegator_id
       AND profiles.wallet_address = auth.uid()::text
     )
   );
