@@ -178,6 +178,16 @@ All contracts are verified on CeloScan. You can view them at:
 
 ---
 
+## Deployed Contracts (Celo Alfajores Testnet)
+
+### StableCoinStaking
+- Contract Address: [0x1AD64E1E629ED0425EfCb03e891a936596404Bd3](https://alfajores.celoscan.io/address/0x1ad64e1e629ed0425efcb03e891a936596404bd3)
+- Constructor Arguments:
+  - CookiesToken: [0xf981a370b218bf8a7e7205f4da5dd9abd96649d6](https://alfajores.celoscan.io/address/0xf981a370b218bf8a7e7205f4da5dd9abd96649d6)
+  - Stablecoin (cUSD): [0x2f25deb3848c207fc8e0c34035b3ba7fc157602b](https://alfajores.celoscan.io/address/0x2f25deb3848c207fc8e0c34035b3ba7fc157602b)
+
+---
+
 ## 🏗️ Contributing  
 Contributions are welcome! To contribute:  
 1. Fork the repository.  

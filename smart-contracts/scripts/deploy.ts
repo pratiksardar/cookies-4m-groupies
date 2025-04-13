@@ -1,5 +1,4 @@
 import { ethers } from "hardhat";
-import { features } from "../src/config/features";
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -8,26 +7,29 @@ async function updateContractAddresses(addresses: {
   nftFactory: string;
   artistDonation: string;
   artistStaking: string;
+  stableCoinStaking: string;
 }) {
-  const configPath = path.join(__dirname, '../src/config/features.ts');
-  let content = await fs.readFile(configPath, 'utf8');
+  // Path to frontend features.ts file
+  const configPath = path.join(__dirname, '../../frontend/src/config/features.ts');
+  
+  try {
+    let content = await fs.readFile(configPath, 'utf8');
 
-  // Update each address in the config
-  Object.entries(addresses).forEach(([key, value]) => {
-    const regex = new RegExp(`(${key}:\\s*)'[^']*'`, 'g');
-    content = content.replace(regex, `$1'${value}'`);
-  });
+    // Update each address in the config
+    Object.entries(addresses).forEach(([key, value]) => {
+      const regex = new RegExp(`(${key}:\\s*)'[^']*'`, 'g');
+      content = content.replace(regex, `$1'${value}'`);
+    });
 
-  await fs.writeFile(configPath, content, 'utf8');
+    await fs.writeFile(configPath, content, 'utf8');
+    console.log("Updated contract addresses in features configuration");
+  } catch (error) {
+    console.warn("Could not update features.ts. You'll need to update contract addresses manually.");
+    console.error(error);
+  }
 }
 
 async function main() {
-  // Check if contract deployment is enabled
-  if (!features.contracts.deployment.enabled) {
-    console.log("Contract deployment is disabled in features configuration.");
-    return;
-  }
-
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
   console.log("Network:", network.name);
@@ -78,20 +80,43 @@ async function main() {
   );
   await artistStaking.waitForDeployment();
   console.log("ArtistStaking deployed to:", await artistStaking.getAddress());
+  
+  // Deploy StableCoinStaking contract
+  const StableCoinStaking = await ethers.getContractFactory("StableCoinStaking");
+  const stableCoinStaking = await StableCoinStaking.deploy(
+    await cookiesToken.getAddress(),
+    stablecoinAddress
+  );
+  await stableCoinStaking.waitForDeployment();
+  console.log("StableCoinStaking deployed to:", await stableCoinStaking.getAddress());
   console.log("Using stablecoin address:", stablecoinAddress);
 
   // Grant minter role to ArtistStaking contract
-  const minterRole = await cookiesToken.addMinter(await artistStaking.getAddress());
+  await cookiesToken.addMinter(await artistStaking.getAddress());
   console.log("Granted minter role to ArtistStaking contract");
+  
+  // Grant minter role to StableCoinStaking contract
+  await cookiesToken.addMinter(await stableCoinStaking.getAddress());
+  console.log("Granted minter role to StableCoinStaking contract");
 
-  // Update contract addresses in features.ts
-  await updateContractAddresses({
+  // Save contract addresses to a local file for reference
+  const addresses = {
     cookiesToken: await cookiesToken.getAddress(),
     nftFactory: await nftFactory.getAddress(),
     artistDonation: await artistDonation.getAddress(),
-    artistStaking: await artistStaking.getAddress()
-  });
-  console.log("Updated contract addresses in features configuration");
+    artistStaking: await artistStaking.getAddress(),
+    stableCoinStaking: await stableCoinStaking.getAddress()
+  };
+  
+  // Write addresses to a JSON file
+  await fs.writeFile(
+    path.join(__dirname, '../deployed-addresses.json'), 
+    JSON.stringify(addresses, null, 2)
+  );
+  console.log("Saved contract addresses to deployed-addresses.json");
+  
+  // Try to update frontend config
+  await updateContractAddresses(addresses);
 
   // Verify contracts
   console.log("\nVerifying contracts...");
@@ -100,6 +125,7 @@ async function main() {
   console.log(`npx hardhat verify --network ${network.name} ${await nftFactory.getAddress()}`);
   console.log(`npx hardhat verify --network ${network.name} ${await artistDonation.getAddress()} ${platformWallet}`);
   console.log(`npx hardhat verify --network ${network.name} ${await artistStaking.getAddress()} ${stablecoinAddress} ${await cookiesToken.getAddress()} ${platformWallet}`);
+  console.log(`npx hardhat verify --network ${network.name} ${await stableCoinStaking.getAddress()} ${await cookiesToken.getAddress()} ${stablecoinAddress}`);
 }
 
 main()

@@ -18,7 +18,8 @@ export const features = {
         cookiesToken: '',
         nftFactory: '',
         artistDonation: '',
-        artistStaking: ''
+        artistStaking: '',
+        stableCoinStaking: ''
       }
     }
   }

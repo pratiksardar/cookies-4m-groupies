@@ -27,3 +27,14 @@ dist-ssr
 cache/
 broadcast/
 out/
+smart-contracts/broadcast/
+smart-contracts/deployments/
+smart-contracts/cache/
+smart-contracts/.env
+frontend/node_modules/
+frontend/.next/
+frontend/build/
+frontend/coverage/
+frontend/dist/
+frontend/public/
+frontend/.env
