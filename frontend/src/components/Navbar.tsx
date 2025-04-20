@@ -5,6 +5,7 @@ import { useTheme } from './ThemeProvider';
 import { WalletModal } from './WalletModal';
 import { NetworkIndicator } from './NetworkIndicator';
 import { StakingModal } from './StakingModal';
+import { RewardsModal } from './RewardsModal';
 import { useCookiesToken } from '../hooks/useCookiesToken';
 
 function Navbar() {
@@ -13,6 +14,7 @@ function Navbar() {
   const { cookiesBalance } = useCookiesToken();
   const { allowToggle } = useTheme();
   const [stakingModalOpen, setStakingModalOpen] = useState(false);
+  const [rewardsModalOpen, setRewardsModalOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -56,17 +58,30 @@ function Navbar() {
                 >
                   Groupies
                 </Link>
+                <Link
+                  to="/stake"
+                  className={`px-3 py-2 rounded-md text-sm font-londrina font-medium ${
+                    isActive('/stake')
+                      ? 'bg-[rgb(var(--text-primary))] text-[rgb(var(--background))]'
+                      : 'text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--text-primary))]/5'
+                  }`}
+                >
+                  Staking
+                </Link>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               {address && <NetworkIndicator />}
               {address ? (
                 <div className="flex items-center space-x-4">
-                  {/* COOKIES Balance Display */}
-                  <div className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-londrina font-medium flex items-center">
+                  {/* COOKIES Balance Display - Now clickable */}
+                  <button
+                    onClick={() => setRewardsModalOpen(true)}
+                    className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-londrina font-medium flex items-center hover:bg-amber-200 transition-colors"
+                  >
                     <span className="mr-1">🍪</span>
                     <span>{cookiesBalance}</span>
-                  </div>
+                  </button>
                   <button
                     onClick={() => setStakingModalOpen(true)}
                     className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-londrina font-medium"
@@ -106,6 +121,12 @@ function Navbar() {
       <StakingModal 
         isOpen={stakingModalOpen}
         onClose={() => setStakingModalOpen(false)}
+      />
+
+      {/* Rewards Modal */}
+      <RewardsModal
+        isOpen={rewardsModalOpen}
+        onClose={() => setRewardsModalOpen(false)}
       />
     </>
   );

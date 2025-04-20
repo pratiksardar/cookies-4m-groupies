@@ -13,15 +13,15 @@ async function updateContractAddresses(addresses: {
   const configPath = path.join(__dirname, '../../frontend/src/config/features.ts');
   
   try {
-    let content = await fs.readFile(configPath, 'utf8');
+  let content = await fs.readFile(configPath, 'utf8');
 
-    // Update each address in the config
-    Object.entries(addresses).forEach(([key, value]) => {
-      const regex = new RegExp(`(${key}:\\s*)'[^']*'`, 'g');
-      content = content.replace(regex, `$1'${value}'`);
-    });
+  // Update each address in the config
+  Object.entries(addresses).forEach(([key, value]) => {
+    const regex = new RegExp(`(${key}:\\s*)'[^']*'`, 'g');
+    content = content.replace(regex, `$1'${value}'`);
+  });
 
-    await fs.writeFile(configPath, content, 'utf8');
+  await fs.writeFile(configPath, content, 'utf8');
     console.log("Updated contract addresses in features configuration");
   } catch (error) {
     console.warn("Could not update features.ts. You'll need to update contract addresses manually.");
@@ -94,7 +94,7 @@ async function main() {
   // Grant minter role to ArtistStaking contract
   await cookiesToken.addMinter(await artistStaking.getAddress());
   console.log("Granted minter role to ArtistStaking contract");
-  
+
   // Grant minter role to StableCoinStaking contract
   await cookiesToken.addMinter(await stableCoinStaking.getAddress());
   console.log("Granted minter role to StableCoinStaking contract");
